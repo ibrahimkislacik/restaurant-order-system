@@ -1,0 +1,17 @@
+.idea
+CFusionRestaurant.Api/bin
+CFusionRestaurant.Api/obj
+CFusionRestaurant.Api.Tests/bin
+CFusionRestaurant.Api.Tests/obj
+CFusionRestaurant.BusinessLayer/bin
+CFusionRestaurant.BusinessLayer/obj
+CFusionRestaurant.BusinessLayer.Tests/bin
+CFusionRestaurant.BusinessLayer.Tests/obj
+CFusionRestaurant.ViewModel/bin
+CFusionRestaurant.ViewModel/obj
+CFusionRestaurant.DataLayer/bin
+CFusionRestaurant.DataLayer/obj
+CFusionRestaurant.Entities/bin
+CFusionRestaurant.Entities/obj
+*.user
+.vs/

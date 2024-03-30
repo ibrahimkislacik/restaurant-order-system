@@ -2,6 +2,7 @@
 using CFusionRestaurant.Api.Controllers;
 using CFusionRestaurant.BusinessLayer.Abstract.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement.Request;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -21,7 +22,7 @@ public class InsertCategoryTests
     }
 
     [Fact]
-    public async Task ValidData_ReturnsCreated()
+    public async Task ShouldReturnsCreated()
     {
         // Arrange
         var categoryInsertViewModel = new CategoryInsertRequestViewModel { Name = "Test Category" };
@@ -32,13 +33,14 @@ public class InsertCategoryTests
         var result = await _controller.Insert(categoryInsertViewModel);
 
         // Assert
-        var createdResult = Assert.IsType<CreatedResult>(result);
-        Assert.Equal($"/category/{categoryId}", createdResult.Location);
-        Assert.Equal(StatusCodes.Status201Created, createdResult.StatusCode);
+        result.Should().BeOfType<CreatedResult>()
+            .Which.Location.Should().Be($"/category/{categoryId}");
+        result.Should().BeOfType<CreatedResult>()
+            .Which.StatusCode.Should().Be(StatusCodes.Status201Created);
     }
 
     [Fact]
-    public async Task InvalidData_ReturnsBadRequest()
+    public async Task ShouldReturnsBadRequest()
     {
         // Arrange
         var categoryInsertViewModel = new CategoryInsertRequestViewModel(); 
@@ -48,7 +50,7 @@ public class InsertCategoryTests
         var result = await _controller.Insert(categoryInsertViewModel);
 
         // Assert
-        Assert.IsType<BadRequestObjectResult>(result);
+        result.Should().BeOfType<BadRequestObjectResult>();
     }
 
   

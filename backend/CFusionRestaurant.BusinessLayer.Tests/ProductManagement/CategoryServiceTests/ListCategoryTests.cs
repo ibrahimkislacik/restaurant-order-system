@@ -5,6 +5,7 @@ using CFusionRestaurant.ViewModel.ProductManagement;
 using MongoDB.Bson;
 using Moq;
 using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
+using FluentAssertions;
 
 namespace CFusionRestaurant.BusinessLayer.Tests.ProductManagement.CategoryServiceTests;
 
@@ -16,7 +17,8 @@ public class ListCategoryTests
     private readonly Mock<IRepository<Category>> _categoryRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
 
-    public ListCategoryTests() {
+    public ListCategoryTests()
+    {
         _categoryRepositoryMock = new Mock<IRepository<Category>>();
         _mapperMock = new Mock<IMapper>();
     }
@@ -33,11 +35,11 @@ public class ListCategoryTests
 
         _categoryRepositoryMock.Setup(repo => repo.ListAsync()).ReturnsAsync(categories);
 
-        _mapperMock.Setup(mapper => mapper.Map<List<CategoryViewModel>>(categories)).Returns(new List<CategoryViewModel>
-            {
-                new CategoryViewModel { Id = "1", Name = "Category 1" },
-                new CategoryViewModel { Id = "2", Name = "Category 2" }
-            });
+        var expectedCategoryViewModels = categories.Select(category =>
+        new CategoryViewModel { Id = category.Id.ToString(), Name = category.Name }
+        ).ToList();
+
+        _mapperMock.Setup(mapper => mapper.Map<List<CategoryViewModel>>(categories)).Returns(expectedCategoryViewModels);
 
         var categoryService = new CategoryService(_categoryRepositoryMock.Object, _mapperMock.Object);
 
@@ -45,7 +47,6 @@ public class ListCategoryTests
         var result = await categoryService.ListAsync();
 
         // Assert step - verify the result
-        Assert.NotNull(result);
-        Assert.Equal(categories.Count, result.Count);
+        result.Should().NotBeNull().And.BeEquivalentTo(expectedCategoryViewModels);
     }
 }

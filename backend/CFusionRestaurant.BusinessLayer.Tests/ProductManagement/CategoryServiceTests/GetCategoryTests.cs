@@ -3,6 +3,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -45,7 +46,7 @@ public class GetCategoryTests
         var result = await categoryService.GetAsync(categoryId.ToString());
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedCategory.Id.ToString(), result.Id);
+        result.Should().NotBeNull();
+        result.Id.Should().Be(categoryId.ToString());
     }
 }

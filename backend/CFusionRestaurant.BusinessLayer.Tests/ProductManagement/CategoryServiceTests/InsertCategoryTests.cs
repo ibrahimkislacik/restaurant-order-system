@@ -4,6 +4,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -32,16 +33,17 @@ public class InsertCategoryTests
             Name = "New Category"
         };
 
+        var expectedCategoryId = ObjectId.GenerateNewId();
         var category = new Category
         {
-            Id = ObjectId.GenerateNewId(),
+            Id = expectedCategoryId,
             Name = "New Category",
             CreatedDateTime = DateTime.Now
         };
 
         _categoryRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<Category>())).Callback<Category>((c) =>
         {
-            c.Id = category.Id; 
+            c.Id = expectedCategoryId; 
         });
 
         _mapperMock.Setup(mapper => mapper.Map<Category>(categoryInsertViewModel)).Returns(category);
@@ -52,6 +54,6 @@ public class InsertCategoryTests
         var result = await categoryService.InsertAsync(categoryInsertViewModel);
 
         // Assert
-        Assert.Equal(category.Id.ToString(), result);
+        result.Should().Be(expectedCategoryId.ToString());
     }
 }

@@ -84,13 +84,13 @@ namespace CFusionRestaurant.Api.Controllers
         /// </summary>
         /// <param name="id">The ID of the product to delete.</param>
         /// <returns>Returns an empty response if the product is deleted successfully.</returns>
-        /// <response code="200">Returns an empty response if the product is deleted successfully.</response>
+        /// <response code="204">Returns an empty response if the product is deleted successfully.</response>
         /// <response code="401">If the request is not authenticated.</response>
         /// <response code="403">If the request is authenticated but does not have the required role.</response>
         /// <response code="404">If the product to delete is not found.</response>
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,7 +98,7 @@ namespace CFusionRestaurant.Api.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             await _productService.DeleteAsync(id);
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
@@ -106,13 +106,13 @@ namespace CFusionRestaurant.Api.Controllers
         /// </summary>
         /// <param name="productUpdateViewModel">The updated data for the product.</param>
         /// <returns>Returns an empty response if the product is updated successfully.</returns>
-        /// <response code="200">Returns an empty response if the product is updated successfully.</response>
+        /// <response code="204">Returns if the product is updated successfully.</response>
         /// <response code="400">If the request data is invalid.</response>
         /// <response code="401">If the request is not authenticated.</response>
         /// <response code="403">If the request is authenticated but does not have the required role.</response>
         /// <response code="404">If the product to update is not found.</response>
         [HttpPut()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -125,7 +125,7 @@ namespace CFusionRestaurant.Api.Controllers
                 return BadRequest(ModelState);
             }
             await _productService.UpdateAsync(productUpdateViewModel);
-            return Ok();
+            return NoContent();
         }
     }
 }

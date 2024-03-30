@@ -4,6 +4,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.OrderManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.OrderManagement;
 using CFusionRestaurant.ViewModel.OrderManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -32,11 +33,13 @@ public class ListOrderTests
 
         _orderRepositoryMock.Setup(repo => repo.ListAsync()).ReturnsAsync(orders);
 
-        _mapperMock.Setup(mapper => mapper.Map<List<OrderViewModel>>(orders)).Returns(new List<OrderViewModel>
+        var expectedOrderViewModels = new List<OrderViewModel>
             {
                 new OrderViewModel { Id = "1", Total = 5 },
                 new OrderViewModel { Id = "2", Total = 6 }
-            });
+            };
+
+        _mapperMock.Setup(mapper => mapper.Map<List<OrderViewModel>>(orders)).Returns(expectedOrderViewModels);
 
         var orderService = new OrderService(_orderRepositoryMock.Object, null, null, _mapperMock.Object);
 
@@ -44,7 +47,8 @@ public class ListOrderTests
         var result = await orderService.ListAsync();
 
         // Assert step - verify the result
-        Assert.NotNull(result);
-        Assert.Equal(orders.Count, result.Count);
+        result.Should().NotBeNull();
+        result.Should().HaveCount(orders.Count);
+        result.Should().BeEquivalentTo(expectedOrderViewModels);
     }
 }

@@ -5,6 +5,7 @@ using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
 using CFusionRestaurant.ViewModel.ProductManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -36,8 +37,13 @@ public class UpdateProductTests
 
         var productService = new ProductService(_productRepositoryMock.Object, null, _mapperMock.Object);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(() => productService.UpdateAsync(productUpdateViewModel));
+
+        //Act
+        Func<Task> act = async () => await productService.UpdateAsync(productUpdateViewModel);
+
+        //Assert
+        await act.Should().ThrowAsync<NotFoundException>();
+
     }
 
     [Fact]
@@ -85,17 +91,17 @@ public class UpdateProductTests
 
         // Assert
         var updatedProduct = await _productRepositoryMock.Object.GetAsync(productId.ToString());
-        Assert.NotNull(updatedProduct);
-        Assert.Equal(productUpdateViewModel.Name, updatedProduct.Name);
-        Assert.Equal(productUpdateViewModel.Description, updatedProduct.Description);
-        Assert.Equal(productUpdateViewModel.Price, updatedProduct.Price);
-        Assert.Equal(productUpdateViewModel.IsActiveOnMonday, updatedProduct.IsActiveOnMonday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnTuesday, updatedProduct.IsActiveOnTuesday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnWednesday, updatedProduct.IsActiveOnWednesday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnThursday, updatedProduct.IsActiveOnThursday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnFriday, updatedProduct.IsActiveOnFriday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnSaturday, updatedProduct.IsActiveOnSaturday);
-        Assert.Equal(productUpdateViewModel.IsActiveOnSunday, updatedProduct.IsActiveOnSunday);
+        updatedProduct.Should().NotBeNull();
+        updatedProduct!.Name.Should().Be(productUpdateViewModel.Name);
+        updatedProduct.Description.Should().Be(productUpdateViewModel.Description);
+        updatedProduct.Price.Should().Be(productUpdateViewModel.Price);
+        updatedProduct.IsActiveOnMonday.Should().Be(productUpdateViewModel.IsActiveOnMonday);
+        updatedProduct.IsActiveOnTuesday.Should().Be(productUpdateViewModel.IsActiveOnTuesday);
+        updatedProduct.IsActiveOnWednesday.Should().Be(productUpdateViewModel.IsActiveOnWednesday);
+        updatedProduct.IsActiveOnThursday.Should().Be(productUpdateViewModel.IsActiveOnThursday);
+        updatedProduct.IsActiveOnFriday.Should().Be(productUpdateViewModel.IsActiveOnFriday);
+        updatedProduct.IsActiveOnSaturday.Should().Be(productUpdateViewModel.IsActiveOnSaturday);
+        updatedProduct.IsActiveOnSunday.Should().Be(productUpdateViewModel.IsActiveOnSunday);
     }
 
 

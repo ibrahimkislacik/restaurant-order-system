@@ -5,6 +5,7 @@ using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
 using CFusionRestaurant.ViewModel.ProductManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -40,8 +41,11 @@ public class InsertProductTests
 
         var productService = new ProductService(_productRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        await Assert.ThrowsAsync<BusinessException>(() => productService.InsertAsync(productInsertViewModel));
+        // Act
+        Func<Task> action = async () => await productService.InsertAsync(productInsertViewModel);
+
+        //Assert
+        await action.Should().ThrowAsync<BusinessException>();
     }
 
     [Fact]
@@ -57,8 +61,12 @@ public class InsertProductTests
 
         var productService = new ProductService(_productRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        await Assert.ThrowsAsync<BusinessException>(() => productService.InsertAsync(productInsertViewModel));
+        // Act
+        Func<Task> action = async () => await productService.InsertAsync(productInsertViewModel);
+
+        //Assert
+        await action.Should().ThrowAsync<BusinessException>();
+
     }
 
     [Fact]
@@ -95,7 +103,7 @@ public class InsertProductTests
         var result = await productService.InsertAsync(productInsertViewModel);
 
         // Assert
-        Assert.Equal(product.Id.ToString(), result); 
+        result.Should().Be(product.Id.ToString());
     }
 
     

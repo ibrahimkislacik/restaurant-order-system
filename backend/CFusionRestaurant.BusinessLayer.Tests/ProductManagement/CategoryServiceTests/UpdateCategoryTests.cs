@@ -4,6 +4,7 @@ using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
 using CFusionRestaurant.ViewModel.ProductManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -39,8 +40,11 @@ public class UpdateCategoryTests
 
         var categoryService = new CategoryService(_categoryRepositoryMock.Object, _mapperMock.Object);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(async () => await categoryService.UpdateAsync(categoryUpdateViewModel));
+        //Act
+        Func<Task> act = async () => await categoryService.UpdateAsync(categoryUpdateViewModel);
+
+        //Assert
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 
     [Fact]
@@ -71,7 +75,7 @@ public class UpdateCategoryTests
         await categoryService.UpdateAsync(categoryUpdateViewModel);
 
         // Assert
-        Assert.Equal(categoryUpdateViewModel.Name, existingCategory.Name);
+        existingCategory.Name.Should().Be(categoryUpdateViewModel.Name);
     }
 
     

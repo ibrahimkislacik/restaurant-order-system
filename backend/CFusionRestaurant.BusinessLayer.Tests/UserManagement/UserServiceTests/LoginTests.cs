@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.BusinessLayer.Concrete.UserManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.UserManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
 using CFusionRestaurant.ViewModel.Settings;
 using CFusionRestaurant.ViewModel.UserManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 using System.Linq.Expressions;
@@ -55,9 +57,9 @@ public class LoginTests
         var result = await userService.LoginAsync(userLoginRequestViewModel);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.NotNull(result.AccessToken);
-        Assert.True(result.AccessTokenExpireDate > DateTime.UtcNow);
+        result.Should().NotBeNull();
+        result.AccessToken.Should().NotBeNullOrEmpty();
+        result.AccessTokenExpireDate.Should().BeAfter(DateTime.UtcNow);
     }
 
     [Fact]
@@ -75,8 +77,12 @@ public class LoginTests
 
         var userService = new UserService(_appSettingsMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        await Assert.ThrowsAsync<BusinessException>(() => userService.LoginAsync(userLoginRequestViewModel));
+        // Act
+        Func<Task> action = async () => await userService.LoginAsync(userLoginRequestViewModel);
+
+        //Assert
+        await action.Should().ThrowAsync<BusinessException>();
+
     }
 
 

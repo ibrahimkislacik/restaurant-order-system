@@ -3,6 +3,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -34,9 +35,10 @@ public class DeleteCategoryTests
         var categoryService = new CategoryService(_categoryRepositoryMock.Object, _mapperMock.Object);
 
         // Act
-        await categoryService.DeleteAsync(categoryId.ToString());
+        Func<Task> deleteAction = async () => await categoryService.DeleteAsync(categoryId.ToString());
 
         // Assert
+        await deleteAction.Should().NotThrowAsync<Exception>();
         _categoryRepositoryMock.Verify(repo => repo.DeleteAsync(categoryId.ToString()), Times.Once);
     }
 
@@ -51,7 +53,10 @@ public class DeleteCategoryTests
 
         var categoryService = new CategoryService(_categoryRepositoryMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        await Assert.ThrowsAsync<NotFoundException>(async () => await categoryService.DeleteAsync(categoryId.ToString()));
+        // Act
+        Func<Task> deleteAction = async () => await categoryService.DeleteAsync(categoryId.ToString());
+
+        //Assert
+        await deleteAction.Should().ThrowAsync<NotFoundException>();
     }
 }

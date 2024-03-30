@@ -10,6 +10,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
+using FluentAssertions;
 
 namespace CFusionRestaurant.BusinessLayer.Tests.OrderManagement.OrderServiceTests;
 
@@ -40,11 +41,11 @@ public class InsertOrderTests
         var orderService = new OrderService(_orderRepositoryMock.Object, _productRepositoryMock.Object,
                                             _currentUserServiceMock.Object, _mapperMock.Object);
 
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<BusinessException>(() => orderService.InsertAsync(orderInsertRequestViewModel));
+        // Act
+        Func<Task> act = async () => await orderService.InsertAsync(orderInsertRequestViewModel);
 
         // Assert
-        Assert.Equal("At least one product must be selected", exception.Message);
+        await act.Should().ThrowAsync<BusinessException>().WithMessage("At least one product must be selected");
     }
 
     [Fact]
@@ -70,11 +71,12 @@ public class InsertOrderTests
         var orderService = new OrderService(_orderRepositoryMock.Object, _productRepositoryMock.Object,
                                             _currentUserServiceMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        var exception = await Assert.ThrowsAsync<BusinessException>(() => orderService.InsertAsync(orderInsertRequestViewModel));
+        // Act
+        Func<Task> act = async () => await orderService.InsertAsync(orderInsertRequestViewModel);
 
         // Assert
-        Assert.Equal($"Product with Id = {productId} not found", exception.Message);
+        await act.Should().ThrowAsync<BusinessException>().WithMessage($"Product with Id = {productId} not found");
+
     }
 
     [Fact]
@@ -117,7 +119,7 @@ public class InsertOrderTests
         var result = await orderService.InsertAsync(orderInsertRequestViewModel);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.NotNull(result.OrderNo);
+        result.Should().NotBeNull();
+        result.OrderNo.Should().NotBeNullOrEmpty();
     }
 }

@@ -6,6 +6,7 @@ using CFusionRestaurant.Entities.UserManagement;
 using CFusionRestaurant.ViewModel.ExceptionManagement;
 using CFusionRestaurant.ViewModel.Settings;
 using CFusionRestaurant.ViewModel.UserManagement.Request;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 using System.Linq.Expressions;
@@ -40,8 +41,9 @@ public class InsertUserTests
         _userRepositoryMock.Setup(repo => repo.GetAsync(It.IsAny<Expression<Func<User, bool>>>()))
                            .ReturnsAsync((User)null);
 
-        _mapperMock.Setup(mapper => mapper.Map<User>(userInsertRequestViewModel))
-                   .Returns(new User { Id = ObjectId.GenerateNewId(), EMail = userInsertRequestViewModel.EMail });
+        var newUser = new User { Id = ObjectId.GenerateNewId(), EMail = userInsertRequestViewModel.EMail };
+
+        _mapperMock.Setup(mapper => mapper.Map<User>(userInsertRequestViewModel)).Returns(newUser);
 
         var userService = new UserService(_appSettingsMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
 
@@ -49,8 +51,7 @@ public class InsertUserTests
         var result = await userService.InsertAsync(userInsertRequestViewModel);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.NotEmpty(result);
+        result.Should().NotBeNull().And.NotBeEmpty().And.Be(newUser.Id.ToString());
     }
 
     [Fact]
@@ -70,7 +71,11 @@ public class InsertUserTests
 
         var userService = new UserService(_appSettingsMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
 
-        // Act and Assert
-        await Assert.ThrowsAsync<BusinessException>(() => userService.InsertAsync(userInsertRequestViewModel));
+        // Act
+        Func<Task> action = async () => await userService.InsertAsync(userInsertRequestViewModel);
+
+        //Assert
+        await action.Should().ThrowAsync<BusinessException>();
+
     }
 }

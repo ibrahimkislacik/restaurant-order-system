@@ -3,6 +3,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.OrderManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.OrderManagement;
 using CFusionRestaurant.ViewModel.OrderManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -45,8 +46,8 @@ public class GetOrderTests
         var result = await orderService.GetAsync(orderId.ToString());
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedOrder.Id.ToString(), result.Id);
+        result.Should().NotBeNull();
+        result.Id.Should().Be(expectedOrder.Id.ToString());
     }
 
 }

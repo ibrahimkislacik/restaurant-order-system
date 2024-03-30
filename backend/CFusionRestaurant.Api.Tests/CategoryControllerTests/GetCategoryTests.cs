@@ -3,8 +3,10 @@ using CFusionRestaurant.Api.Controllers;
 using CFusionRestaurant.BusinessLayer.Abstract.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement;
 using Microsoft.AspNetCore.Mvc;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
+using CFusionRestaurant.Entities.ProductManagement;
 
 namespace CFusionRestaurant.Api.Tests.CategoryControllerTests;
 
@@ -20,7 +22,7 @@ public class GetCategoryTests
     }
 
     [Fact]
-    public async Task WithValidId_ReturnsCategory()
+    public async Task ShouldReturnsCategory()
     {
         // Arrange
         var categoryId = ObjectId.GenerateNewId();
@@ -31,13 +33,12 @@ public class GetCategoryTests
         var result = await _controller.GetById(categoryId.ToString());
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var actualCategory = Assert.IsType<CategoryViewModel>(okResult.Value);
-        Assert.Equal(expectedCategory, actualCategory);
+        result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeEquivalentTo(expectedCategory);
     }
 
     [Fact]
-    public async Task WithInvalidId_ReturnsNotFound()
+    public async Task ShouldReturnsNotFound()
     {
         // Arrange
         string categoryId = ObjectId.GenerateNewId().ToString();
@@ -47,6 +48,7 @@ public class GetCategoryTests
         var result = await _controller.GetById(categoryId);
 
         // Assert
-        Assert.IsType<NotFoundObjectResult>(result);
+        result.Should().BeOfType<NotFoundObjectResult>()
+           .Which.Value.Should().Be($"Category with Id = {categoryId} not found");
     }
 }

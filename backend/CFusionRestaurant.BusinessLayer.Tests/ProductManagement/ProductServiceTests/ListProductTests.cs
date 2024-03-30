@@ -3,6 +3,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement;
+using FluentAssertions;
 using MongoDB.Driver;
 using Moq;
 
@@ -45,10 +46,12 @@ public class ListProductTests
         var productService = new ProductService(_productRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
 
         // Act
-        var result = await productService.ListAsync(dayOfWeek);
+        Func<Task<List<ProductViewModel>>> action = async () => await productService.ListAsync(dayOfWeek);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(productsViewModel.Count, result.Count);
+        await action.Should().NotThrowAsync();
+        var result = await action();
+        result.Should().NotBeNull();
+        result.Count.Should().Be(productsViewModel.Count);
     }
 }

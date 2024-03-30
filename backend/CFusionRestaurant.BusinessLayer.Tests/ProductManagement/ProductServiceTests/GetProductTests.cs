@@ -4,6 +4,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.ProductManagement;
 using CFusionRestaurant.ViewModel.ProductManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using Moq;
 
@@ -64,16 +65,7 @@ public class GetProductTests
         var result = await productService.GetAsync(productId.ToString());
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedProduct.Name, result.Name);
-        Assert.Equal(expectedProduct.Description, result.Description);
-        Assert.Equal(expectedProduct.Price, result.Price);
-        Assert.Equal(expectedProduct.IsActiveOnMonday, result.IsActiveOnMonday);
-        Assert.Equal(expectedProduct.IsActiveOnTuesday, result.IsActiveOnTuesday);
-        Assert.Equal(expectedProduct.IsActiveOnWednesday, result.IsActiveOnWednesday);
-        Assert.Equal(expectedProduct.IsActiveOnThursday, result.IsActiveOnThursday);
-        Assert.Equal(expectedProduct.IsActiveOnFriday, result.IsActiveOnFriday);
-        Assert.Equal(expectedProduct.IsActiveOnSaturday, result.IsActiveOnSaturday);
-        Assert.Equal(expectedProduct.IsActiveOnSunday, result.IsActiveOnSunday);
+        result.Should().NotBeNull();
+        result.Should().BeEquivalentTo(productViewModel);
     }
 }

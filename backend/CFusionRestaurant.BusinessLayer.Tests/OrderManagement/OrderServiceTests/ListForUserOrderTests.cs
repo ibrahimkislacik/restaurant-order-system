@@ -5,6 +5,7 @@ using CFusionRestaurant.BusinessLayer.Concrete.OrderManagement;
 using CFusionRestaurant.DataLayer;
 using CFusionRestaurant.Entities.OrderManagement;
 using CFusionRestaurant.ViewModel.OrderManagement;
+using FluentAssertions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
@@ -40,11 +41,13 @@ public class ListForUserOrderTests
         _orderRepositoryMock.Setup(repo => repo.ListAsync(It.IsAny<FilterDefinition<Order>>(), null))
                            .ReturnsAsync(userOrders);
 
-        _mapperMock.Setup(mapper => mapper.Map<List<OrderViewModel>>(userOrders)).Returns(new List<OrderViewModel>
-            {
-                new OrderViewModel { Id = "1", OrderUserInfo = new OrderUserInfoViewModel { UserId = userId }},
-                new OrderViewModel { Id = "2", OrderUserInfo = new OrderUserInfoViewModel { UserId = userId }}
-            });
+        var expectedOrderViewModels = new List<OrderViewModel>
+        {
+            new OrderViewModel { Id = "1", OrderUserInfo = new OrderUserInfoViewModel { UserId = userId }},
+            new OrderViewModel { Id = "2", OrderUserInfo = new OrderUserInfoViewModel { UserId = userId }}
+        };
+        _mapperMock.Setup(mapper => mapper.Map<List<OrderViewModel>>(userOrders)).Returns(expectedOrderViewModels);
+
 
         var orderService = new OrderService(_orderRepositoryMock.Object, null, _currentUserServiceMock.Object, _mapperMock.Object);
 
@@ -52,7 +55,8 @@ public class ListForUserOrderTests
         var result = await orderService.ListForUserAsync();
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(userOrders.Count, result.Count); 
+        result.Should().NotBeNull();
+        result.Should().HaveCount(userOrders.Count);
+        result.Should().BeEquivalentTo(expectedOrderViewModels);
     }
 }

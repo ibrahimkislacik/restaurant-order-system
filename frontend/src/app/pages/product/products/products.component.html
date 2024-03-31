@@ -1,0 +1,134 @@
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Products</h4>
+        <div class="flex-shrink-0">
+            <button type="button" class="btn btn-success"
+                    data-bs-toggle="modal"
+                    (click)="openAddModal()">
+                <i class="ri-add-line align-bottom me-1"></i>
+                Add
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <select class="form-select mb-5" (change)="onChange($event)">
+            <option value="">Please Select A Day</option>
+            <option value="{{DayOfWeek.Monday}}">Monday</option>
+            <option value="{{ DayOfWeek.Tuesday }}">Tuesday</option>
+            <option value="{{ DayOfWeek.Wednesday }}">Wednesday</option>
+            <option value="{{ DayOfWeek.Thursday }}">Thursday</option>
+            <option value="{{ DayOfWeek.Friday }}">Friday</option>
+            <option value="{{ DayOfWeek.Saturday }}">Saturday</option>
+            <option value="{{ DayOfWeek.Sunday }}">Sunday</option>
+        </select>
+        <ng-container *ngIf="products">
+            <div class="table-responsive table-card mb-0">
+                <table class="table align-middle">
+                    <thead>
+                    <tr class="bg-light text-muted">
+                        <th>#</th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th class="text-end">
+                            Price
+                        </th>
+                        <th>
+                            Monday
+                        </th>
+                        <th>
+                            Tuesday
+                        </th>
+                        <th>
+                            Wednesday
+                        </th>
+                        <th>
+                            Thursday
+                        </th>
+                        <th>
+                            Friday
+                        </th>
+                        <th>
+                            Saturday
+                        </th>
+                        <th>
+                            Sunday
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let product of products ; index as i">
+                        <th>
+                            <span>{{ i + 1 }}</span>
+                        </th>
+                        <td>
+                            {{ product.name }}
+                        </td>
+                        <td>
+                            {{ product.description }}
+                        </td>
+                        <td class="text-end">
+                            {{ product.price | decimalDisplay }}
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnMonday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnMonday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnTuesday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnTuesday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnWednesday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnWednesday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnThursday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnThursday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnFriday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnFriday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnSaturday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnSaturday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td>
+                            <span *ngIf="product.isActiveOnSunday"
+                                  class="badge m-r-5 badge-pill bg-success">Active</span>
+                            <span *ngIf="!product.isActiveOnSunday"
+                                  class="badge m-r-5 badge-pill bg-danger">Passive</span>
+                        </td>
+                        <td class="text-end column-actions">
+                            <button type="button" class="btn btn-primary btn-icon"
+                                    (click)="openEditModal(product)"><i
+                                    class="feather icon-info"></i></button>
+                            <button type="button" class="btn btn-danger btn-icon"
+                                    (click)="openDeleteConfirm(product)"><i
+                                    class="feather icon-slash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

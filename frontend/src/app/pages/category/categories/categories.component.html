@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Categories</h4>
+        <div class="flex-shrink-0">
+            <button type="button" class="btn btn-success"
+                    data-bs-toggle="modal"
+                    (click)="openAddModal()">
+                <i class="ri-add-line align-bottom me-1"></i>
+                Add
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <ng-container *ngIf="categories">
+            <div class="table-responsive table-card mb-0">
+                <table class="table align-middle">
+                    <thead>
+                    <tr class="bg-light text-muted">
+                        <th>#</th>
+                        <th>
+                            Name
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let category of categories ; index as i">
+                        <th>
+                            <span>{{ i + 1 }}</span>
+                        </th>
+                        <td>
+                            {{ category.name }}
+                        </td>
+                        <td class="text-end column-actions">
+                            <button type="button" class="btn btn-primary btn-icon"
+                                    (click)="openEditModal(category)"><i
+                                    class="feather icon-info"></i></button>
+                            <button type="button" class="btn btn-danger btn-icon"
+                                    (click)="openDeleteConfirm(category)"><i
+                                    class="feather icon-slash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

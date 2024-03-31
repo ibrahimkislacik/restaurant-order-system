@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h4 class="modal-title">Order</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close(false)"></button>
+</div>
+
+<div class="modal-body">
+    <div class="row g-3 align-middle">
+
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="form-label">Order No</label>
+                </div>
+                <div class="col-lg-9">
+                    <div>{{ orderModel.orderNo }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="form-label">User</label>
+                </div>
+                <div class="col-lg-9">
+                    <div>{{ orderModel.orderUserInfo.eMail }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="form-label">Products</label>
+                </div>
+                <div class="col-lg-9">
+                    <table class="table align-middle">
+                        <tr *ngFor="let product of orderModel.orderProducts" >
+                            <th>{{ product.productName }}</th>
+                            <th>{{ product.quantity }}</th>
+                            <th class="text-end">{{ product.unitPrice }} {{currency}}</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="form-label">Total</label>
+                </div>
+                <div class="col-lg-9">
+                    <div class="text-end">{{ orderModel.total }} {{currency}}</div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="activeModal.close()">Close
+    </button>
+</div>
+

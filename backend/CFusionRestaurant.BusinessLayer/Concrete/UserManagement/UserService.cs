@@ -15,6 +15,9 @@ using System.Text;
 
 namespace CFusionRestaurant.BusinessLayer.Concrete.UserManagement;
 
+/// <summary>
+/// Service class responsible for handling operations related to users.
+/// </summary>
 public class UserService : IUserService
 {
     private readonly IAppSettings _appSettings;

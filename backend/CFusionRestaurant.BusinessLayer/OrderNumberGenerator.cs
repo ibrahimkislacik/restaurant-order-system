@@ -1,6 +1,9 @@
 ﻿
 namespace CFusionRestaurant.BusinessLayer;
 
+/// <summary>
+/// Static class responsible for generating order numbers.
+/// </summary>
 public static class OrderNumberGenerator
 {
     private static readonly Random Random = new Random();

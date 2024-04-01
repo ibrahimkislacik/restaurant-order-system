@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {ExceptionLog} from "../models/exception-log";
 
-
 @Injectable({providedIn: 'root'})
 export class ExceptionLogService {
     private readonly baseUrl: string;

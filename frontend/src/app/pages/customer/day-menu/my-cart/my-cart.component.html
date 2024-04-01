@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h4 class="modal-title">My Cart</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close(false)"></button>
+</div>
+<div class="modal-body">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Note</th>
+            <th scope="col" class="text-end">Price</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            @for (product of cartItems; track product.name; let i = $index) {
+                <tr>
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>
+                        {{ product.name }}
+                    </td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.note }}</td>
+                    <td class="text-end">
+                        {{ product.price | decimalDisplay }}
+                    </td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-danger btn-icon"
+                                (click)="removeCartItem(product)"><i
+                                class="feather icon-slash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="activeModal.close()">Cancel
+    </button>
+    <button class="btn btn-success btn-process-text" (click)="createOrder()" [disabled]="isButtonSpinnerActive">
+        Create Order
+    </button>
+</div>
+

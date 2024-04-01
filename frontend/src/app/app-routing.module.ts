@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {AdminComponent} from './theme/layout/admin/admin.component';
 import {GuestComponent} from './theme/layout/guest/guest.component';
+import {AuthenticationGuard} from "./guards/authentication.guard";
 
 const routes: Routes = [
     {
@@ -15,7 +16,16 @@ const routes: Routes = [
             },
             {
                 path: 'dashboard',
-                loadComponent: () => import('./demo/dashboard/dashboard.component'),
+                loadComponent: () => import('./pages/dashboard/dashboard.component'),
+            },
+            {
+                path: 'customer',
+                loadChildren: () =>
+                    import('./pages/customer/customer.module').then(
+                        (m) => m.CustomerModule,
+                    ),
+                canActivate: [AuthenticationGuard],
+                data: {permissions: ['User']},
             },
             {
                 path: 'categories',
@@ -23,6 +33,8 @@ const routes: Routes = [
                     import('./pages/category/category.module').then(
                         (m) => m.CategoryModule,
                     ),
+                canActivate: [AuthenticationGuard],
+                data: {permissions: ['Admin']},
             },
             {
                 path: 'products',
@@ -30,6 +42,8 @@ const routes: Routes = [
                     import('./pages/product/product.module').then(
                         (m) => m.ProductModule,
                     ),
+                canActivate: [AuthenticationGuard],
+                data: {permissions: ['Admin']},
             },
             {
                 path: 'orders',
@@ -37,6 +51,8 @@ const routes: Routes = [
                     import('./pages/order/order.module').then(
                         (m) => m.OrderModule,
                     ),
+                canActivate: [AuthenticationGuard],
+                data: {permissions: ['Admin']},
             },
         ],
     },
@@ -47,10 +63,10 @@ const routes: Routes = [
             {
                 path: 'auth',
                 loadChildren: () =>
-                    import('./demo/pages/authentication/authentication.module').then(
+                    import('./pages/authentication/authentication.module').then(
                         (m) => m.AuthenticationModule,
                     ),
-            },
+            }
         ],
     },
 ];

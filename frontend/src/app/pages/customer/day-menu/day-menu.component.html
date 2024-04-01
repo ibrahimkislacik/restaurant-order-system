@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
+        <div class="flex-shrink-0">
+            <button type="button" class="btn btn-success"
+                    data-bs-toggle="modal"
+                    (click)="openMyCartModal()">
+                <i class="ri-add-line align-bottom me-1"></i>
+                My Cart
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product</th>
+                <th scope="col">Description</th>
+                <th scope="col" class="text-end">Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (product of products; track product.name; let i = $index) {
+                    <tr>
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>
+                            {{ product.name }}
+                        </td>
+                        <td>{{ product.description }}</td>
+                        <td class="text-end">
+                            {{ product.price | decimalDisplay }}
+                        </td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-primary btn-icon"
+                                    (click)="openCartAddModal(product)"><i
+                                    class="feather icon-info"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

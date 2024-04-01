@@ -4,21 +4,6 @@ import { Component, OnInit } from '@angular/core';
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
-declare const AmCharts: any;
-
-import '../../../assets/charts/amchart/amcharts.js';
-import '../../../assets/charts/amchart/gauge.js';
-import '../../../assets/charts/amchart/serial.js';
-import '../../../assets/charts/amchart/light.js';
-import '../../../assets/charts/amchart/pie.min.js';
-import '../../../assets/charts/amchart/ammap.min.js';
-import '../../../assets/charts/amchart/usaLow.js';
-import '../../../assets/charts/amchart/radar.js';
-import '../../../assets/charts/amchart/worldLow.js';
-
-import dataJson from 'src/fake-data/map_data';
-import mapColor from 'src/fake-data/map-color-data.json';
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,

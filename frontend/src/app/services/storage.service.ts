@@ -1,5 +1,6 @@
 ﻿import {Injectable} from "@angular/core";
 import {UserModel} from "../models/user.model";
+import {OrderInsertRequestModel} from "../models/order-insert-request.model";
 
 @Injectable({providedIn: 'root'})
 export class StorageService {
@@ -37,6 +38,24 @@ export class StorageService {
         localStorage.setItem('token', token);
         this._token = token;
     }
+
+    private _cart: OrderInsertRequestModel;
+    public get cart(): OrderInsertRequestModel {
+        if (!this._cart) {
+            let storageValue = localStorage.getItem('cart');
+            if (!storageValue) {
+                return null;
+            }
+            this._user = JSON.parse(storageValue);
+        }
+        return this._cart;
+    }
+
+    public set cart(cart: OrderInsertRequestModel) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        this._cart = cart;
+    }
+    
 
     clear() {
         localStorage.clear();

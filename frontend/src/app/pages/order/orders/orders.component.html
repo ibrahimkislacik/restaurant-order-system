@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">Orders</h4>
+        <div class="flex-shrink-0">
+        </div>
+    </div>
+    <div class="card-body">
+        <ng-container *ngIf="orders">
+            <div class="table-responsive table-card mb-0">
+                <table class="table align-middle">
+                    <thead>
+                    <tr class="bg-light text-muted">
+                        <th>#</th>
+                        <th>
+                            Order No
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Product
+                        </th>
+                        <th class="text-end">
+                            Total
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let order of orders ; index as i">
+                        <th>
+                            <span>{{ i + 1 }}</span>
+                        </th>
+                        <td>
+                            {{ order.orderNo }}
+                        </td>
+                        <td>
+                            {{ order.orderUserInfo.eMail }}
+                        </td>
+                        <td>
+                            {{ order.orderProducts.length }}
+                        </td>
+                        <td class="text-end">
+                            {{ order.total | decimalDisplay }}
+                        </td>
+                        <td class="text-end column-actions">
+                            <button type="button" class="btn btn-primary btn-icon"
+                                    (click)="openDetailModal(order)"><i
+                                    class="feather icon-info"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

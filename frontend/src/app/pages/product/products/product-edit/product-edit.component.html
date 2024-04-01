@@ -1,0 +1,188 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="modal-header">
+        <h4 class="modal-title">Product</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close(false)"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row g-3 align-middle">
+
+            <div class="col-lg-12" *ngIf="isNew">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Category</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <select class="form-select" formControlName="categoryId" 
+                                [ngClass]="{ 'is-invalid': isSubmitted && f['categoryId'].errors }">
+                            <option *ngFor="let category of categories" value="{{category.id}}">{{ category.name }}</option>
+                        </select>
+                        <div *ngIf="isSubmitted && f['categoryId'].errors" class="invalid-feedback">
+                            <span *ngIf="f['categoryId'].errors['required']">Name is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Name</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control" formControlName="name"
+                               [ngClass]="{ 'is-invalid': isSubmitted && f['name'].errors }">
+                        <div *ngIf="isSubmitted && f['name'].errors" class="invalid-feedback">
+                            <span *ngIf="f['name'].errors['required']">Name is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Description</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control" formControlName="description"
+                               [ngClass]="{ 'is-invalid': isSubmitted && f['description'].errors }">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Price</label>
+                    </div>
+                    <div class="col-lg-4 col-10">
+                        <input type="text" class="form-control" formControlName="price"
+                               [ngClass]="{ 'is-invalid': isSubmitted && f['price'].errors }" decimal>
+                        <div *ngIf="isSubmitted && f['price'].errors" class="invalid-feedback">
+                            <span *ngIf="f['price'].errors['required']">Price is required</span>
+                        </div>
+                    </div>
+                    <div class="col-2 ps-0">
+                        <div class="mt-2">{{ currency }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Monday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnMonday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnMonday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnMonday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Tuesday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnTuesday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnTuesday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnTuesday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Wednesday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnWednesday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnWednesday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnWednesday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Thursday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnThursday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnThursday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnThursday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Friday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnFriday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnFriday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnFriday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Saturday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnSaturday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnSaturday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnSaturday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <label class="form-label d-block m-0">Sunday</label>
+                        <span class="text-muted" *ngIf="f['isActiveOnSunday'].value">Active</span>
+                        <span class="text-muted" *ngIf="!f['isActiveOnSunday'].value">Passive</span>
+                    </div>
+                    <div>
+                        <div class="form-check form-switch form-switch-lg">
+                            <input type="checkbox" class="form-check-input" formControlName="isActiveOnSunday">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="activeModal.close()">Cancel
+        </button>
+        <button class="btn btn-success btn-process-text" type="submit" [disabled]="isButtonSpinnerActive">
+            Save
+        </button>
+    </div>
+
+</form>

@@ -16,6 +16,9 @@ using Microsoft.Extensions.Options;
 
 namespace CFusionRestaurant.BusinessLayer.DependencyInjection;
 
+/// <summary>
+/// Static class responsible for adding dependency services to the service collection.
+/// </summary>
 public static class DependencyService
 {
     public static IServiceCollection AddDependencyServices(this IServiceCollection serviceCollection, IConfiguration configuration) {

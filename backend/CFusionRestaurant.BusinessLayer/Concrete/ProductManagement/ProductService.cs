@@ -10,6 +10,9 @@ using MongoDB.Driver;
 
 namespace CFusionRestaurant.BusinessLayer.Concrete.ProductManagement;
 
+/// <summary>
+/// Service class responsible for handling operations related to products.
+/// </summary>
 public class ProductService : IProductService
 {
     private readonly IRepository<Product> _productRepository;

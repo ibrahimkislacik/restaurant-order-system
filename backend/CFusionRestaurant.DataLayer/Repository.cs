@@ -6,6 +6,10 @@ using System.Linq.Expressions;
 
 namespace CFusionRestaurant.DataLayer;
 
+/// <summary>
+/// Generic repository implementation for MongoDB.
+/// </summary>
+/// <typeparam name="T">The type of entity managed by the repository.</typeparam>
 public class Repository<T> : IRepository<T> where T : BaseMongoEntity
 {
     internal readonly IMongoCollection<T?> Entities;
@@ -13,6 +17,10 @@ public class Repository<T> : IRepository<T> where T : BaseMongoEntity
 
     private readonly FindOptions<T> _options;
 
+    /// <summary>
+    /// Constructor to initialize the repository with a MongoDB settings instance.
+    /// </summary>
+    /// <param name="dbSettings">The MongoDB settings instance.</param>
     public Repository(IDbSettings dbSettings)
     {
         Client = new MongoClient(dbSettings.ConnectionString);

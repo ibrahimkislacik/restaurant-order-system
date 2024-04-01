@@ -13,6 +13,9 @@ using MongoDB.Driver;
 
 namespace CFusionRestaurant.BusinessLayer.Concrete.OrderManagement;
 
+/// <summary>
+/// Service class responsible for handling operations related to orders.
+/// </summary>
 public class OrderService : IOrderService
 {
     private readonly IRepository<Order> _orderRepository;
